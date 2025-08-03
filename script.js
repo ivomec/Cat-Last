@@ -1,3 +1,9 @@
+
+---
+
+### **1. 메인 초기화 및 공통 기능**
+이 부분은 페이지가 로드될 때 모든 기능을 시작하고, 여러 탭에서 공통으로 사용하는 기능들을 포함합니다.
+
 ```javascript
 // ===================================================================================
 // ============================= [ 메인 초기화 ] ====================================
@@ -229,6 +235,7 @@ function getHospitalData() {
       }
     };
 }
+
 const formatPrice = (price, prefix = '💸 ') => {
     if (typeof price === 'number') { return `${prefix}${price.toLocaleString('ko-KR')}원`; }
     return `${price}`;
@@ -1257,7 +1264,7 @@ function setupAnesthesiaDashboard() {
     
     // 이벤트 리스너 바인딩
     anesthesiaTab.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', (e) => openAnesthesiaTab(e, e.dataset.tab));
+        button.addEventListener('click', (e) => openAnesthesiaTab(e, e.currentTarget.dataset.tab || e.currentTarget.getAttribute('onclick').match(/'([^']+)'/)[1]));
     });
     anesthesiaTab.querySelector('#weight')?.addEventListener('input', calculateAnesthesiaAll);
     anesthesiaTab.querySelectorAll('#patient_status, #renal_status, #chill_protocol').forEach(select => {
@@ -1290,7 +1297,7 @@ function setupAnesthesiaDashboard() {
     calculateAnesthesiaAll();
     const firstTabButton = anesthesiaTab.querySelector('.tab-button');
     if (firstTabButton) {
-        openAnesthesiaTab({ currentTarget: firstTabButton }, firstTabButton.dataset.tab);
+        openAnesthesiaTab({ currentTarget: firstTabButton }, 'prepTab');
     }
 }
 ```
